@@ -1,5 +1,5 @@
 ---
-title: "IPhone2 in 2021"
+title: "iPhone2 in 2021"
 date: 2021-06-20T02:36:23+08:00
 draft: false
 ShowToc: false

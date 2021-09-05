@@ -9,7 +9,7 @@ categories: []
 
 Create your own Shortcodes to Embed [Telegram](telegram.org) post.
 
-<!-- more -->
+<!--more-->
 
 > You can extend Hugo’s built-in shortcodes by creating your own using the same templating syntax as that for single and list pages.
 >
