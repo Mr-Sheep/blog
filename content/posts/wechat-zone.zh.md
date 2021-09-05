@@ -61,4 +61,7 @@ IP-CIDR,129.226.0.0/16,no-resolve
 
 ## 數據導出
 
-Coming soon （微信的驗證郵件一直沒有收到）
+![E8DEF059-EB5C-42DC-88E1-196B53FD2BFC.jpeg](https://i.loli.net/2021/09/06/sKrwQnyuCf3t9mB.jpg)
+
+Coming soon （郵件一直沒有收到）
+
