@@ -63,5 +63,14 @@ IP-CIDR,129.226.0.0/16,no-resolve
 
 ![E8DEF059-EB5C-42DC-88E1-196B53FD2BFC.jpeg](https://i.loli.net/2021/09/06/sKrwQnyuCf3t9mB.jpg)
 
-Coming soon （郵件一直沒有收到）
+凌晨申請，中午就收到郵件了：
 
+![Screen Shot 2021-09-06 at 12.59.57 PM.png](https://i.loli.net/2021/09/06/4198pYDzlAteVU2.png)
+
+下載長這樣：
+
+![Screen Shot 2021-09-06 at 1.01.21 PM.png](https://i.loli.net/2021/09/06/HePtZh7mCjFO5cD.png)
+
+下載解壓以後打開目錄下的`index.html`即可查看導出的信息：
+
+![Screen Shot 2021-09-06 at 1.05.11 PM.png](https://i.loli.net/2021/09/06/E3mKGr5UkJORujv.png)
