@@ -230,11 +230,14 @@ All done!
 
 數據庫名字爲`v2board`
 
+爲了保證數據庫安全，請不要給予用戶 `*.*`權限
+
 **MySQL 5.X**
+
 ```sql
 mysql -u root -p 
 輸入密碼
-GRANT ALL PRIVILEGES ON *.* TO 'v2b'@'localhost' IDENTIFIED BY 'fuckGFW（密碼）';
+GRANT ALL PRIVILEGES ON v2board.* TO 'v2b'@'localhost' IDENTIFIED BY 'fuckGFW（密碼）';
 flush privileges;
 
 退出數據庫
@@ -250,8 +253,17 @@ CREATE DATABASE v2board;
 **MySQL 8.X**
 ```sql
 mysql> CREATE USER 'v2b'@'localhost' IDENTIFIED BY 'fuckGFW(你的密碼)';
-mysql> GRANT ALL PRIVILEGES ON *.* TO 'v2b'@'localhost' WITH GRANT OPTION;
+mysql> GRANT ALL PRIVILEGES ON v2board.* TO 'v2b'@'localhost' WITH GRANT OPTION;
 mysql> FLUSH PRIVILEGES;
+mysql> SHOW GRANTS FOR 'v2b'@'localhost';
++----------------------------------------------------------------------------+
+| Grants for v2b@localhost                                                   |
++----------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `v2b`@`localhost`                                    |
+| GRANT ALL PRIVILEGES ON `v2board`.* TO `v2b`@`localhost` WITH GRANT OPTION |
++----------------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+mysql> CREATE DATABASE v2board;
 ```
 
 
