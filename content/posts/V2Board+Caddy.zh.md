@@ -9,9 +9,10 @@ categories: ["networking","Proxy"]
 之前寫過的[V2Board+V2poseidon](https://blog.mrsheep.xyz/posts/v2board+v2poseidon/)是基於 aaPanel(寶塔國際版) 以及一些古董配置寫的
 由於寶塔面板最近[發生](https://www.php.cn/topic/bt/458726.html)重大[安全事故](https://www.chinaz.com/2020/0824/1175116.shtml)以及我大多數伺服器已經更換爲Caddy，爲了保證用戶數據安全，改用Caddy + MySQL + PHP。
 
-雖然折騰了很久，最後還是有成果的
 
 <!--more-->
+# Changelog
+Nov 15th 2021: 添加`php7.4-bcmath`
 
 # 開始之前
 文章基於Caddy v2.2.1 + php 7.4 + mysql 5.7.32，作業系統 Debian 9
@@ -54,7 +55,7 @@ apt update
 
 2. 安裝php7.4(其實只要大於7.3就好) 和 redis
 ```
-apt -y install php7.4 php7.4-fpm php7.4-common php7.4-cli redis
+apt -y install php7.4 php7.4-fpm php7.4-common php7.4-cli redis php7.4-bcmath
 以及一大堆亂七八糟的包 -->
 apt -y install php7.4-curl php7.4-redis php7.4-mysql php7.4-mbstring php7.4-json php7.4-opcache php7.4-readline php7.4-xml
 
@@ -453,6 +454,8 @@ mysqldump -u [用戶]  -p [數據庫] > [filename].sql
 請在安裝完成php7.4以後註釋掉php的apt repo，或者在apt upgrade的時候略過php部分，否則會造成php與php-redis等版本不同
 
 如果出現500錯誤，检查站点根目录权限，递归755，保证目录有可写文件的权限，也有可能是Redis扩展没有安装或者Redis没有按照造成的。你可以通过查看storage/logs下的日志来排查错误或者开启debug模式。
+
+同时请确保目录的所有者为`caddy:caddy`
 
 
 # References
