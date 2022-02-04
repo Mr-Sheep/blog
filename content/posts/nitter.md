@@ -1,5 +1,5 @@
 ---
-title: "Deploy Nitter with caddy and docker"
+title: "Deploy Nitter with caddy/nginx and docker"
 date: 2021-10-29T22:07:04+08:00
 draft: false
 tags: ["Twitter"]
@@ -103,6 +103,8 @@ $ docker run -v $(pwd)/nitter.conf:/src/nitter.conf -d -p 8080:8080 zedeus/nitte
 ```
 
 ## Caddy
+If you want a better performance, you should consider using nginx.
+
 As recommended by nitter, one should run caddy behind a reverse proxy for security reason; in this case, I'll use [caddy](https://github.com/Caddyserver/caddy)
 
 1. To install caddy:
@@ -131,3 +133,50 @@ $ systemctl restart caddy
 $ systemctl enable caddy
 ```
 Head over to `your-domain.com` to enjoy your nitter instance.
+
+## NGINX
+### Installing nginx (copied from [nginx.org](https://nginx.org/en/linux_packages.html#Debian))
+
+    sudo apt install curl gnupg2 ca-certificates lsb-release debian-archive-keyring
+
+Import an official nginx signing key so apt could verify the packages authenticity. Fetch the key:
+
+    curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
+        | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
+
+Verify that the downloaded file contains the proper key:
+
+    gpg --dry-run --quiet --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg
+
+The output should contain the full fingerprint 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62 as follows:
+
+    pub   rsa2048 2011-08-19 [SC] [expires: 2024-06-14]
+          573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62
+    uid                      nginx signing key <signing-key@nginx.com>
+
+If the fingerprint is different, remove the file.
+
+To set up the apt repository for stable nginx packages, run the following command:
+
+    echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
+    http://nginx.org/packages/debian `lsb_release -cs` nginx" \
+        | sudo tee /etc/apt/sources.list.d/nginx.list
+
+To install nginx, run the following commands:
+
+    sudo apt update
+    sudo apt install nginx -y
+
+You also need `certbot` or `acme.sh` installed to issue certificates; simply run `sudo apt -y install certbot` and `certbot certonly --standalone -d <your-domain>`. You can also use Cloudflare's Origin CA if your nitter domain is proxied by Cloudflare.
+
+# keep nitter up-to-date
+Create a new shell script called `what-ever-you-like.sh`
+```bash
+containerId=$(docker ps -q --filter ancestor=zedeus/nitter)
+docker pull zedeus/nitter:latest
+docker stop $containerId
+docker rm $containerId
+docker run -v $(pwd)/nitter.conf:/src/nitter.conf -d --network host zedeus/nitter:latest 
+```
+
+`crontab -e` to run the script every day at 6 am.

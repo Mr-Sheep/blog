@@ -95,13 +95,11 @@ params:
   # home-info mode
   homeInfoParams:
     Title: "Hi there \U0001F44B"
-    Content: You have no idea where I came from. We have no idea where we are going.
+    Content: The struggle of man against power is the struggle of memory against forgetting.
 
   socialIcons:
     - name: github
       url: 'https://github.com/Mr-Sheep'
-    - name: gitlab
-      url: 'https://gitlab.com/MrSheep928'
 
   fuseOpts:
         isCaseSensitive: false
