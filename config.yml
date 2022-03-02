@@ -1,5 +1,5 @@
-baseURL: 'https://blog.mrsheep.xyz'
-title: MrSheep's Blog
+baseURL: 'https://blog.snorlax.blue'
+title: Snorlax's Blog
 paginate: 5
 theme: hugo-PaperMod
 
@@ -98,8 +98,8 @@ params:
     Content: The struggle of man against power is the struggle of memory against forgetting.
 
   socialIcons:
-    - name: github
-      url: 'https://github.com/Mr-Sheep'
+    - name: gitlab
+      url: 'https://gitlab.com/MrSheep928'
 
   fuseOpts:
         isCaseSensitive: false
