@@ -19,7 +19,8 @@ Knot DNS 使用 C 和 LuaJIT 編寫，包含一個解析器和守護進程，的
 - 功能豐富（Feature Packed）
 - 高性能（High Performance）
 - 安全穩定（Secure and Stable）
-- 個人覺得Knot DNS的module也是一個非常好的feature。
+
+個人覺得Knot DNS的module也是一個非常好的feature。之後準備自己做一個anycast dns來玩。
 
 The Knot Re­solver is a caching full re­solver im­ple­men­ta­tion writ­ten in C and LuaJIT, in­clud­ing both a re­solver li­brary and a dae­mon. Mod­u­lar ar­chi­tec­ture of the li­brary keeps the core tiny and ef­fi­cien­t, and pro­vides a state-­ma­chine-­like API.
 
@@ -56,7 +57,9 @@ ${SUDO} apt-get install knot-dnsutils
 ```
 
 啓動：`systemctl start knot`
+
 重啓：`systemctl restart knot`
+
 停止：`systemctl stop knot`
 
 
@@ -152,9 +155,9 @@ policy:
     nsec3: on
 ```
 
-`algorithm`可選參考：[Domain Name System Security (DNSSEC) Algorithm Numbers](https://www.iana.org/assignments/dns-sec-alg-numbers/dns-sec-alg-numbers.xhtml)。推薦使用`ECDSAP256SHA256`或`ECDSAP256SHA256`。使用ECDSA達到128-bit security僅需256-bit，RSA則需要3072bit。
+`algorithm`可選參考：[Domain Name System Security (DNSSEC) Algorithm Numbers](https://www.iana.org/assignments/dns-sec-alg-numbers/dns-sec-alg-numbers.xhtml)。
 
-關於ECDSA和RSA的選擇推薦閱讀：[ECDSA: The missing piece of DNSSEC](https://www.cloudflare.com/dns/dnssec/ecdsa-and-dnssec)
+推薦使用`ECDSAP256SHA256`或`ECDSAP256SHA256`。使用ECDSA達到128-bit security僅需256-bit，RSA則需要3072bit。關於ECDSA和RSA的選擇推薦閱讀：[ECDSA: The missing piece of DNSSEC](https://www.cloudflare.com/dns/dnssec/ecdsa-and-dnssec)
 
 ### [mod-synthrecord](https://www.knot-dns.cz/docs/latest/html/modules.html#synthrecord-automatic-forward-reverse-records)
 
@@ -281,15 +284,25 @@ template:
     storage: "/var/lib/knot/slave"
     file: "%s.zone"
 
+mod-synthrecord:
+  - id: <unique-id>
+    type: reverse
+    origin: 
+    network: 2a0c:2222::/32
+
 zone:
     # slave zone
   - domain: 2.2.2.2.c.0.a.2.ip6.arpa
     template: slave
     master: master
+    module: mod-synthrecord/<unique-id>
     acl: acl_master
 ```
 {{< /collapse >}}
 
+### MISC
+
+提示`failed to update zone file (operation not permitted)`將`/var/lib/knot/`目錄的所有者改爲`knot:knot`即可
 
 ### [Knotc](https://www.knot-dns.cz/docs/latest/html/man_knotc.html#knotc-knot-dns-control-utility)
 
@@ -304,6 +317,7 @@ knotc zone-unset zone owner [type [rdata]]
 knotc zone-commit zone...
 ```
 
+注意輸入的`owner`和`type`等需要加上末尾的`.`使其成爲fully qualified domain name。(If the record owner is not a fully qualified domain name, then it is considered as a relative name to the zone name. )
 
 # RIPE DB domain object
 
