@@ -61,10 +61,10 @@ languages:
 
 params:
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
-  title: "MrSheep's Blog"
-  description: "MrSheep's Blog"
-  author: MrSheep
-  images: "https://blog.mrsheep.xyz/images/avatar.png"
+  title: "Snorlax's Blog"
+  description: "Snorlax's Blog"
+  author: Snorlax
+  images: "https://blog.snorlax.blue/images/avatar.png"
   ShowReadingTime: true
   ShowShareButtons: false
   ShowBreadCrumbs: true
@@ -97,9 +97,6 @@ params:
     Title: "Hi there \U0001F44B"
     Content: The struggle of man against power is the struggle of memory against forgetting.
 
-  socialIcons:
-    - name: gitlab
-      url: 'https://gitlab.com/MrSheep928'
 
   fuseOpts:
         isCaseSensitive: false
