@@ -1,5 +1,5 @@
 ---
-title: "通過Surge和1Blocker實現手機上免登錄使用知乎網頁版"
+title: "通過 Surge 和 1Blocker 實現手機上免登錄使用知乎網頁版"
 date: 2021-10-31T14:26:32+08:00
 draft: false
 tags: ["Zhihu"]
@@ -9,10 +9,10 @@ categories: ["Tweaks"]
 如何幹掉知乎彈出的登錄窗口？
 <!--more-->
 
-知乎是一個垃圾內容非常多的網站，你可以在上面找到各式各樣的極端言論，但是也有一些很多年前寫下的有用的內容。如果直接打開Google/Duckduckgo出來的知乎結果，只能查看一個默認答案，然偶會被強制跳轉到`oia.zhihu.com`
+如果直接打開 Google/duckduckgo 出來的知乎結果，只能查看一個回答，會被強制跳轉到 `oia.zhihu.com`
 
 
-然後就想到了網頁版知乎不會被跳轉，隨便找任意知乎請求可知：
+由於desktop上的知乎不會被強制跳轉：
 ```post
 GET /heifetz/favicon.ico HTTP/2
 Host: static.zhihu.com
@@ -29,7 +29,7 @@ Sec-Fetch-Site: same-site
 ```
 
 
-可以通過使用[Surge](https://www.nssurge.com/)魔改User-Agent達到強制使用桌面版知乎的效果：
+可以通過使用 [Surge](https://www.nssurge.com/) 修改`User-Agent`達到強制使用桌面版知乎的效果：
 ```yaml
 // 移除原有UA
 ^https?://(www|api).zhihu.com/question header-del User-Agent
@@ -37,10 +37,6 @@ Sec-Fetch-Site: same-site
 // 重新添加新的UA
 ^https?://(www|api).zhihu.com/question header-add User-Agent "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5 (Ergänzendes Update)) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15"
 ```
-UA我是隨便選的，如果想要定製自己的UA，可以隨便找一個[UA DB](https://udger.com/resources/ua-list)挑選.
+UA可以根據需要隨意修改，可以在[UA DB](https://udger.com/resources/ua-list)挑選.
 
-這個時候打開知乎你會發現知乎會彈出一個登錄窗口，但是因爲屏幕尺寸太小，無法顯示出關閉按鈕。經過搜索，找到了uBlockOrigin的解決方案：[Add zhihu.com modal login popup #8314](https://github.com/uBlockOrigin/uAssets/pull/8314)。爲了更方便的直接在iOS safari上實現，會用到[1Bocker](https://1blocker.com/)這個神器了
-
-直接添加`block url`規則，block掉：`static.zhihu.com/heifetz/main.signflow.*.js`即可
-
-忙瘋了水一下文章QQ
+後來我找到了uBlockOrigin的解決方案：[Add zhihu.com modal login popup #8314](https://github.com/uBlockOrigin/uAssets/pull/8314)。在iOS safari上實現可以用到[1Bocker](https://1blocker.com/)，直接添加`block url`規則，block掉：`static.zhihu.com/heifetz/main.signflow.*.js`即可

@@ -1,51 +1,27 @@
 ---
-title: "V2Board + Caddy + PHP + MySQL"
+title: "如何成爲帶機場主：面板搭建"
 date: 2020-11-12T20:56:10+08:00
 draft: false
-tags: ["V2Ray","V2Fly","Anti-Censorship"]
+tags: ["v2board","Anti-Censorship"]
 categories: ["networking","Proxy"]
 ---
 
-之前寫過的[V2Board+V2poseidon](https://blog.mrsheep.xyz/posts/v2board+v2poseidon/)是基於 aaPanel(寶塔國際版) 以及一些古董配置寫的
-由於寶塔面板最近[發生](https://www.php.cn/topic/bt/458726.html)重大[安全事故](https://www.chinaz.com/2020/0824/1175116.shtml)以及我大多數伺服器已經更換爲Caddy，爲了保證用戶數據安全，改用Caddy + MySQL + PHP。
-
+如何使用Nginx + PHP + mariadb搭建自己的v2board
 
 <!--more-->
+實際上v2board的前端寫的並不是很好，很容易就可以看到被隱藏的套餐。sspanel也是一個不錯的選擇。
+
+本文默認使用`root`用戶（不推薦你這麼做），請對如`composer`等使用單獨的賬戶
+
 # Changelog
+Jul 28th 2022: 移除 caddy 部分
+
 Nov 15th 2021: 添加`php7.4-bcmath`
 
-# 開始之前
-文章基於Caddy v2.2.1 + php 7.4 + mysql 5.7.32，作業系統 Debian 9
-- 採用[V2Board](https://github.com/v2board/v2board/)作爲前端
-
-- [V2-poseidon](https://github.com/ColetteContreras/v2ray-poseidon)作爲伺服器端
-
-- 部分節點多個v2ray共存
-
-- 其實配置很簡單
 
 
-### 所需工具：
 
-SSH + 腦子 + 電腦 + **耐心**
-
-默認使用root用戶（不推薦）
-
-**在點讚一下Caddy的官方社區，開發者非常熱情的幫助解決靜態的問題**
-
-# V2Board
-
-## 最低要求
-根據[官方給出的配置](https://docs.v2board.com/deploy/aapanel.html#%E4%BD%BF%E7%94%A8aapanel%E9%83%A8%E7%BD%B2)
-
-☑️ Nginx 1.17
-
-☑️ MySQL 5.6
-
-☑️ PHP 7.3 
-
-這裏我不再使用Nginx，而目前V2board官方docker鏡像的版本還停留在Caddy V1，所以。。。。
-## PHP
+# PHP
 1. 添加Ondřej Surý的ppa:
 ```
 wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
@@ -53,13 +29,15 @@ echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" |  tee /etc/ap
 apt update
 ```
 
-2. 安裝php7.4(其實只要大於7.3就好) 和 redis
+2. 安裝`php7.4`和`redis`
 ```
 apt -y install php7.4 php7.4-fpm php7.4-common php7.4-cli redis php7.4-bcmath
 以及一大堆亂七八糟的包 -->
 apt -y install php7.4-curl php7.4-redis php7.4-mysql php7.4-mbstring php7.4-json php7.4-opcache php7.4-readline php7.4-xml
 
 ```
+在安裝之後建議hold php的版本或註釋掉repo
+
 3. 解除被禁用的函數
 以`php7.4`爲例，編輯位於 `/etc/php/7.4/fpm/php.ini`
 找到
@@ -73,45 +51,21 @@ disable_functions = "show_source, system, shell_exec, exec"
    編輯`/etc/php/7.4/fpm/php-fpm.conf`，在最後添加
 
    ```php
-   include=/etc/php/7.4/fpm/pool.d/*.conf
    include=/etc/php/7.4/fpm/www.conf
    ```
 
-   創建並編輯`/etc/php/7.4/fpm/www.conf`
+
+5. 編輯`/etc/php/7.4/fpm/pool.d/www.conf`，修改
 
    ```
-   [global]
-   pid = /tmp/php-fpm.pid
-   error_log = /var/log/php-fpm.log
-   log_level = notice
-   
-   [www]
-   listen = /run/php-cgi.sock
-   listen.backlog = -1
-   pm = dynamic
-   pm.status_path = /phpfpm_status
-   pm.max_children = 300
-   pm.start_servers = 20
-   pm.min_spare_servers = 20
-   pm.max_spare_servers = 50
-   request_terminate_timeout = 100
-   request_slowlog_timeout = 30
-   slowlog = /var/log/php-slow.log
-   ```
-
-   編輯`/etc/php/7.4/fpm/pool.d/www.conf`，添加
-
-   ```
-   user = caddy
-   group = caddy
-   listen.owner = caddy
-   listen.group = caddy
+   user = nginx
+   group = nginx
+   listen.owner = nginx
+   listen.group = nginx
    listen.mode = 0660
    ```
 
-   因爲caddy使用caddy用戶運行，爲保證caddy能夠正常使用fastcgi unix socket，需要一致的用戶
-
-   另外監聽的socket需要是非root用戶可訪問地址，如`/run/php_cgi.sock`
+   保證nginx能夠正常使用fastcgi unix socket，需要一致的用戶
 
 5. 啓動
 
@@ -123,31 +77,19 @@ disable_functions = "show_source, system, shell_exec, exec"
    
 
 
-## MySQL
-目前默認的MySQL的版本是8，在部分命令上和原有的5.X有區別
+# MariaDB
 
-在[官方下載](https://dev.mysql.com/downloads/repo/apt/#current-tab)找到最新版本的`.deb`包
-以2020年11月最新版本`mysql-apt-config_0.8.16-1_all.deb`爲例
+```bash
+curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
 ```
-wget http://repo.mysql.com/mysql-apt-config_0.8.16-1_all.deb
-apt install ./mysql-apt-config_0.8.16-1_all.deb
-apt update
-apt install mysql-server
-```
+
 使用`systemctl status mysql`驗證mysql是否成功安裝
+```bash
+● mariadb.service - MariaDB 10.6.8 database server
+     Loaded: loaded (/lib/systemd/system/mariadb.service; enabled; vendor preset: enabled)
+     Active: active (running) since Sat 2022-06-25 22:49:38 PDT; 
 ```
-mysql.service - MySQL Community Server
-   Loaded: loaded (/lib/systemd/system/mysql.service; enabled; vendor preset: en
-   Active: active (running) since Wed 2020-11-11 23:42:15 EST; 11h ago
- Main PID: 23632 (mysqld)
-    Tasks: 31 (limit: 4915)
-   Memory: 232.3M
-      CPU: 56.974s
-   CGroup: /system.slice/mysql.service
-           └─23632 /usr/sbin/mysqld --daemonize --pid-file=/var/run/mysqld/mysql
-
-```
-### 加固 MySQL 安全
+## 加固 MySQL
 ```
 mysql_secure_installation
 ```
@@ -216,7 +158,7 @@ All done!
 
 ```
 
-#### 如何移除密碼安全性驗證插件？
+## 如何移除密碼安全性驗證插件？
 ```
     mysql -h localhost -u root -p
     uninstall plugin validate_password;
@@ -224,7 +166,7 @@ All done!
     UNINSTALL COMPONENT 'file://component_validate_password';
 ```
 
-### 創建數據庫
+## 創建數據庫
 數據庫用戶爲`v2b`
 
 用戶密碼爲`fuckGFW`
@@ -253,6 +195,7 @@ CREATE DATABASE v2board;
 ```
 **MySQL 8.X**
 ```sql
+mysql> CREATE DATABASE v2board;
 mysql> CREATE USER 'v2b'@'localhost' IDENTIFIED BY 'fuckGFW(你的密碼)';
 mysql> GRANT ALL PRIVILEGES ON v2board.* TO 'v2b'@'localhost' WITH GRANT OPTION;
 mysql> FLUSH PRIVILEGES;
@@ -264,7 +207,7 @@ mysql> SHOW GRANTS FOR 'v2b'@'localhost';
 | GRANT ALL PRIVILEGES ON `v2board`.* TO `v2b`@`localhost` WITH GRANT OPTION |
 +----------------------------------------------------------------------------+
 2 rows in set (0.00 sec)
-mysql> CREATE DATABASE v2board;
+
 ```
 
 
@@ -278,7 +221,224 @@ mysql -p -u [用戶] [數據庫] < 備份的數據表.sql
 mysqldump -u [用戶]  -p [數據庫] > [filename].sql
 ```
 
-## 安裝V2Board
+{{< collapse summary="自動備份數據庫" >}}
+來自：[Pe46dro/Bash-MySQL-Database-SFTP-FTP-Backup](https://github.com/Pe46dro/Bash-MySQL-Database-SFTP-FTP-Backup)
+```bash
+#!/bin/bash
+
+# Linux MySQL Database FTP Backup Script
+# Version: 1.0
+# Script by: Pietro Marangon
+# Skype: pe46dro
+# Email: pietro.marangon@gmail.com
+# SFTP function by unixfox and Pe46dro
+
+backup_path="/root"
+
+create_backup() {
+  umask 177
+
+  FILE="$db_name-$d.sql.gz"
+  mysqldump --user=$user --password=$password --host=$host $db_name | gzip --best > $FILE
+
+  echo 'Backup Complete'
+}
+
+clean_backup() {
+  rm -f $backup_path/$FILE
+  echo 'Local Backup Removed'
+}
+
+########################
+# Edit Below This Line #
+########################
+
+# Database credentials
+
+user="USERNAME HERE"
+password="PASSWORD HERE"
+host="IP HERE"
+db_name="DATABASE NAME HERE"
+
+# FTP Login Data
+USERNAME="USERNAME HERE"
+PASSWORD="PASSWORD HERE"
+SERVER="IP HERE"
+PORT="SERVER PORT HERE"
+
+#Remote directory where the backup will be placed
+REMOTEDIR="./"
+
+#Transfer type
+#1=FTP
+#2=SFTP
+TYPE=1
+
+##############################
+# Don't Edit Below This Line #
+##############################
+
+d=$(date --iso)
+cd $backup_path
+create_backup
+
+if [ $TYPE -eq 1 ]
+then
+ftp -n -i $SERVER <<EOF
+user $USERNAME $PASSWORD
+binary
+cd $REMOTEDIR
+mput $FILE
+quit
+EOF
+elif [ $TYPE -eq 2 ]
+then
+rsync --rsh="sshpass -p $PASSWORD ssh -p $PORT -o StrictHostKeyChecking=no -l $USERNAME" $backup_path/$FILE $SERVER:$REMOTEDIR
+else
+echo 'Please select a valid type'
+fi
+
+echo 'Remote Backup Complete'
+clean_backup
+#END
+```
+{{< /collapse >}}
+
+# nginx
+
+參考：[nginx: Linux packages](https://nginx.org/en/linux_packages.html#Debian)
+
+Install the prerequisites:
+```
+sudo apt install curl gnupg2 ca-certificates lsb-release debian-archive-keyring
+```
+
+Import an official nginx signing key so apt could verify the packages authenticity. Fetch the key:
+
+    curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
+        | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
+
+Verify that the downloaded file contains the proper key:
+
+    gpg --dry-run --quiet --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg
+
+The output should contain the full fingerprint `573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62` as follows:
+
+    pub   rsa2048 2011-08-19 [SC] [expires: 2024-06-14]
+          573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62
+    uid                      nginx signing key <signing-key@nginx.com>
+
+If the fingerprint is different, remove the file.
+
+To set up the apt repository for stable nginx packages, run the following command:
+
+    echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
+    http://nginx.org/packages/debian `lsb_release -cs` nginx" \
+        | sudo tee /etc/apt/sources.list.d/nginx.list
+
+Set up repository pinning to prefer our packages over distribution-provided ones:
+
+    echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" \
+        | sudo tee /etc/apt/preferences.d/99nginx
+
+To install nginx, run the following commands:
+
+    sudo apt update
+    sudo apt install nginx
+
+
+
+2. 編輯`/etc/nginx/conf.d/domain.conf`
+
+```nginx
+server {
+  listen 443 ssl http2;
+  listen [::]:443 ssl http2;
+  root /var/www/domain/public;
+  index index.php index.html;
+  server_name domain.name;
+
+  add_header X-Frame-Options "SAMEORIGIN";
+  add_header X-XSS-Protection "1; mode=block";
+  add_header X-Content-Type-Options "nosniff";
+  add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload";
+
+  ssl_certificate               /etc/nginx/cert/portal/pubkey.pem;
+  ssl_certificate_key           /etc/nginx/cert/portal/privkey.pem;
+  ssl_protocols                 TLSv1.2 TLSv1.3;
+  ssl_ciphers                   ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
+  ssl_session_tickets           off;
+  ssl_session_cache             shared:SSL:10m;
+  ssl_stapling                  on;
+  ssl_stapling_verify           on;
+  ssl_prefer_server_ciphers     on;
+
+  if ($http_user_agent ~* "MicroMessenger|QBWebViewType|QQBroswer|UBrowser|360SE|360EE|MetaSr|HUAWEI|HarmonyOS|Maxthon|Sogou|LieBao|TIM|HONOR|wechatdevtools|CensysInspect|qihoobot|Baiduspider|Googlebot|Googlebot-Mobile|Googlebot-Image|Mediapartners-Google|Adsbot-Google|Feedfetcher-Google|YoudaoBot|Sosospider|MSNBot|ia_archiver"){
+    return 403;
+  } # 不需要屏蔽爬蟲等請移除
+  
+  location /downloads {
+
+  }
+
+  location / {
+    try_files $uri $uri/ /index.php$is_args$query_string;
+    deny 162.142.125.0/24; #如果不需要屏蔽censys.io請移除,下同
+    deny 167.94.138.0/24; 
+    deny 167.94.145.0/24;
+    deny 167.94.146.0/24;
+    deny 167.248.133.0/24;
+    deny 2602:80d:1000:b0cc:e::/80;
+    deny 2620:96:e000:b0cc:e::/80;
+  }
+  
+  location ~ .*\.(js|css)?$
+  {
+    expires      1h;
+    error_log off;
+    access_log /dev/null;
+  }
+
+  location ~ \.php$ {
+    include snippets/fastcgi-php.conf;
+    fastcgi_index index.php;
+    fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+  }
+}
+
+```
+
+
+3.啓動及權限
+
+   在網站目錄下
+
+   ```
+   chown -R nginx:nginx *
+   chmod -R 755 *
+   systemctl start nginx
+   systemctl enable nginx
+   ```
+
+   4. 移除Google Analysis
+   編輯`resources/views`目錄下的`admin.blade.php`和`app.blade.php`
+   移除或註釋其中
+   ```php
+   <script async src="https://www.googletagmanager.com/gtag/js?id=G-P1E9Z5LRRK"></script>
+   ```
+
+
+# V2Board
+
+## 最低要求
+根據[官方給出的配置](https://docs.v2board.com/deploy/aapanel.html#%E4%BD%BF%E7%94%A8aapanel%E9%83%A8%E7%BD%B2)
+
+☑️ Nginx 1.17
+
+☑️ MySQL 5.6
+
+☑️ PHP 7.3 
+
 
 1. 我的網站目錄位於`/var/www/domain`，在該目錄下：
 
@@ -288,8 +448,6 @@ mysqldump -u [用戶]  -p [數據庫] > [filename].sql
    ```
 
 2. 獲取Composer
-
-   
 
    ```
    wget https://getcomposer.org/composer-stable.phar
@@ -303,18 +461,13 @@ mysqldump -u [用戶]  -p [數據庫] > [filename].sql
 
 3. 安裝
 
-   
-
-   ```bash
+   ```
    php composer.phar install
    ```
 
-   會提示你不要run as root，如果提示要求確認的話輸入yes就好啦
-   這個過程中如果有報錯的話，大概率是你沒有裝什麼包，基本都是`apt -y install php7.4-報錯缺失的名字`就好
+   	可以通過 `apt -y install php7.4-報錯缺失的名字` 解決大部分報錯。當然內存不足也會導致失敗，分配swap即可
 
-   當然內存不足也會導致失敗，分配swap就好啦
-
-   ```bash
+   ```
    php artisan v2board:install
    ```
 
@@ -330,89 +483,12 @@ mysqldump -u [用戶]  -p [數據庫] > [filename].sql
 
    **到此，V2Board已經配置完成**
 
-## Caddy
-
-1. 獲取Caddy
-
-   以2.2.1爲例，最新版本請前往[Caddy Github Repo](https://github.com/caddyserver/caddy/releases/latest)查看
-
-   ```
-   wget https://github.com/caddyserver/caddy/releases/download/v2.2.1/caddy_2.2.1_linux_amd64.deb
-   dpkg -i caddy_2.2.1_linux_amd64.deb
-   ```
-
-   
-
-
-
-2. 編輯`/etc/caddy/Caddyfile`
-
-   ```
-   域名 {
-   	tls 郵箱
-   	root * /var/www/域名/public/
-   	php_fastcgi  unix//run/php-cgi.sock
-   	try_files {path} {path}/ /index.php?{query}
-   	file_server
-   }
-   ```
-
-   注意`php_fastcgi`後的`socket`需要和PHP部分配置的一樣
-
-   如果還需要將這臺伺服器作爲節點使用，需要添加
-
-   ```
-           reverse_proxy /path/ 127.0.0.1:v2端口 {
-                   header_up Host {http.request.host}
-                   header_up X-Real-IP {http.request.remote.host}
-                   header_up X-Forwarded-For {http.request.remote.host}
-                   header_up X-Forwarded-Port {http.request.port}
-                   header_up X-Forwarded-Proto {http.request.scheme}
-           }
-   ```
-
-   完整的`Caddyfile`
-
-   ```
-   域名 {
-   	tls 郵箱
-   	root * /var/www/域名/public/
-   	php_fastcgi  unix//run/php-cgi.sock
-   	try_files {path} {path}/ /index.php?{query}
-   	file_server
-   	reverse_proxy /path/ 127.0.0.1:v2端口 {
-     	header_up Host {http.request.host}
-       header_up X-Real-IP {http.request.remote.host}
-       header_up X-Forwarded-For {http.request.remote.host}
-       header_up X-Forwarded-Port {http.request.port}
-       header_up X-Forwarded-Proto {http.request.scheme}
-     }
-   }
-   ```
-
-   3.啓動及權限
-
-   在網站目錄下
-
-   ```
-   chown -R caddy:caddy *
-   chmod -R 755 *
-   systemctl start caddy
-   systemctl enable caddy
-   ```
-
-   4. 移除Google Analysis
-   編輯`resources/views`目錄下的`admin.blade.php`和`app.blade.php`
-   移除或註釋其中
-   ```
-   <script async src="https://www.googletagmanager.com/gtag/js?id=G-P1E9Z5LRRK"></script>
-   ```
 
 # V2Poseidon
-
+{{< collapse summary="鑑於poseidon已經跑路，建議別讀了" >}}
 1. 安裝
 
-   我討厭docker，如果喜歡docker的話請移步[官綱文檔](https://poseidon-gfw.cc/shi-yong-v2ray-poseidon/v2ray-poseidon-with-v2board)
+
 
    ```
    git clone https://github.com/ColetteContreras/v2ray-poseidon.git
@@ -445,9 +521,8 @@ mysqldump -u [用戶]  -p [數據庫] > [filename].sql
    }
    ```
 
-3. 在V2Board中添加新的節點
+{{< /collapse >}}
 
-   建議參考[之前的文章](https://blog.mrsheep.xyz/posts/v2board+v2poseidon/)和[官綱文檔](https://poseidon-gfw.cc/shi-yong-v2ray-poseidon/v2ray-poseidon-with-v2board)
 
 ## 注意
 
@@ -455,7 +530,7 @@ mysqldump -u [用戶]  -p [數據庫] > [filename].sql
 
 如果出現500錯誤，检查站点根目录权限，递归755，保证目录有可写文件的权限，也有可能是Redis扩展没有安装或者Redis没有按照造成的。你可以通过查看storage/logs下的日志来排查错误或者开启debug模式。
 
-同时请确保目录的所有者为`caddy:caddy`
+同时请确保目录的所有者为`nginx:nginx`
 
 
 # References
