@@ -1,5 +1,5 @@
 ---
-title: "使用Surge的Information Panel編寫出口ip檢測腳本"
+title: "使用 Surge 的 Information Panel 編寫出口ip檢測腳本"
 date: 2022-02-05T03:07:55+08:00
 draft: false
 tags: ["Surge"]

@@ -51,6 +51,14 @@ Stage 2/3: Performing Value Fill (ff)
 
 Stage 3/3: Performing Random Fill
 ✔ Completed in 6 hours
+
+Stage 3/3: Verifying Random Fill
+✔ Completed in 6 hours
+✔ Total time: 1 day
+    Total device size       1.82TB
+    Total device blocks     1907697
+    Total blocks wiped      1907697
+    Skipped blocks          0 (0%)
 ```
 
 來自lethe作者的測試

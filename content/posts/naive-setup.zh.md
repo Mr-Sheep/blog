@@ -1,5 +1,5 @@
 ---
-title: "Naive配置"
+title: "Naive 配置"
 date: 2021-05-13T17:05:24+08:00
 draft: false
 categories: ['Naive','V2Ray']
