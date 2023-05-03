@@ -166,6 +166,12 @@ policy:
 
 推薦使用`ECDSAP256SHA256`或`ECDSAP256SHA256`。使用 ECDSA 達到 128-bit security 僅需 256-bit，RSA 則需要 3072bit。關於 ECDSA 和 RSA 的選擇推薦閱讀：[ECDSA: The missing piece of DNSSEC](https://www.cloudflare.com/dns/dnssec/ecdsa-and-dnssec)
 
+生成 DS:
+
+```
+keymgr .c.0.a.2.ip6.arpa. ds
+```
+
 ### [mod-synthrecord](https://www.knot-dns.cz/docs/latest/html/modules.html#synthrecord-automatic-forward-reverse-records)
 
 這個插件可以自動爲 prefix 創建格式爲`2a0c-2222-30--1.<origin>.`反向解析記錄，可以通過手動添加覆蓋:
