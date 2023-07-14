@@ -57,7 +57,7 @@ Los Angeles, CA 90071
 - 一只USPS的預付費信封（限Priority/Express），簽收可以要求簽名；
 - 一張簽好名的[免責聲明](https://www.la.us.emb-japan.go.jp/pdf/RELEASE_OF_LIABILITY.pdf)
 
-{{< notice note >}}
+{{< notice info >}}
 1. 照片請使用膠水粘貼至申請表，請不要使用訂書機
 2. 申請表不適用欄目（酒店，航班，擔保人，邀請人）請寫**N/A**. 打印並簽名（我有同時簽中英文）。我另外附帶最近的旅行計劃+機票確認信
 3. Bank Statement 非本人名下需要提供相關證明，我剛好有公證過的相關文件，statement可以沒有流水，~~錢夠就行（>$50k?）~~

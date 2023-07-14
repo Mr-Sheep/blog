@@ -12,6 +12,8 @@ How to unlock LUKS enabled disk on headless linux machine
 
 <!--more-->
 
+
+
 {{< figure src="/img/n5105.webp" caption="N5105 PCB" class="center-fig">}}
 
 I recently purchased this puppy and planned to use it as my home lab + router. I encrypted the entire disk with LUKS[^1] and wondered how to unlock it headlessly.
