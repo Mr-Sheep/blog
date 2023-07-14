@@ -3,7 +3,7 @@
 baseURL = "https://blog.snorlax.blue"
 
 # The name of this wonderful theme ;-).
-theme = ['hugo-bearblog']
+theme = ['hugo-bearblog-mod']
 
 # Basic metadata configuration for your blog.
 title = "Snorlax ʕ•ᴥ•ʔ"
