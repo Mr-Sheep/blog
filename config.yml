@@ -1,7 +1,7 @@
 baseURL: 'https://blog.snorlax.blue'
 title: Snorlax's Blog
 paginate: 5
-theme: hugo-PaperMod
+theme: ["hugo-notice", hugo-PaperMod]
 
 enableInlineShortcodes: true
 enableRobotsTXT: true
@@ -111,6 +111,3 @@ outputs:
         - HTML
         - RSS
         - JSON # is necessary
-
-
-

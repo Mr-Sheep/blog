@@ -1,5 +1,5 @@
 ---
-title: "Vmware Credential Guards Fix"
+title: "VMware Credential Guards Fix"
 date: 2019-12-01T19:31:35+08:00
 draft: false
 tags: ["Vmware"]
@@ -22,15 +22,14 @@ Then reboot
 
 ### **Disable Device Guard**
 
-Editing the Registry with following key:  **HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity**
+Editing the Registry with following key: **HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity**
 
-Set:  Name = “**Enabled”**  Type =dword  Data = **0**
+Set: Name = “**Enabled”** Type =dword Data = **0**
 
 Then reboot
 
 Also, you can start **gpedit.msc**
 
-Under **Computer Configuration\Administrative Templates\System\Device Guard**, change it to  **disabled**.  
+Under **Computer Configuration\Administrative Templates\System\Device Guard**, change it to **disabled**.
 
 **If you see the same settings as below, you might not have Device Guard enabled.**
-
