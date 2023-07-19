@@ -1,8 +1,8 @@
 ---
-title: "Mac Broken App"
+title: "Simple Fix for macOS broken app"
 date: 2020-10-14T16:12:55+08:00
 draft: false
-tags: ["OS X"]
+tags: ["macOS"]
 categories: ["system"]
 ---
 
