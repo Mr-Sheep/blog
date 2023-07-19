@@ -14,7 +14,7 @@ Every time I quit an adobe app, like photoshop, I ended up with a bunch of backg
 
 {{< figure src="/blog/no-thank-you-adobe/process-list.webp" caption="Process List" class="center-fig">}}
 
-(Don'f forget we also have "Creative Cloud Helper", "Core Sync", "CCXProcess_", and "CCLibrary"...)
+(Don't forget we also have "Creative Cloud Helper", "Core Sync", "CCXProcess_", and "CCLibrary"...)
 
 Simply removing the `com.adobe` plists from `/Library/LaunchAgents/` and `~/Library/LaunAgents` can prevent them from starting up at login, but not after quitting an adobe app.
 
@@ -30,7 +30,12 @@ After digging around the internet, found [this post](https://apple.stackexchange
 
 **Introducing santa**
 
+{{< figure src="https://raw.githubusercontent.com/google/santa/main/Source/gui/Resources/Images.xcassets/AppIcon.appiconset/santa-hat-icon-256.png"  caption="santa icon" class="center-fig">}}
+
 > Santa is a binary authorization system for macOS. It consists of a system extension that monitors for executions, a daemon that makes execution decisions based on the contents of a local database, a GUI agent that notifies the user in case of a block decision and a command-line utility for managing the system and synchronizing the database with a server. [^1] 
+
+Official git repo: [google/santa](https://github.com/google/santa)    
+Latest release: [tag:latest](https://github.com/google/santa/releases/latest)
 
 TL;DR: santa will match the identifier of binary and block it if it matches one of the preset rules:
 
@@ -56,7 +61,7 @@ sudo santactl rule --silent-block --path /Applications/Utilities/Adobe\ Sync/Cor
 sudo santactl rule --silent-block --path /Applications/Utilities/Adobe\ Creative\ Cloud/ACC/Creative\ Cloud\ Helper.app/
 ```
 
-feel free to kill the process from activity monitor now. 
+feel free to kill the process from **Activity Monitor**. You don't have to see it again in some times. You will need to update the rules after updating those apps since it uses sha256sum as identifiers.
 
 incase you are wondering, photoshop 2022 and audition 2022 works just fine:
 
