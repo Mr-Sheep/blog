@@ -20,7 +20,7 @@ Simply removing the `com.adobe` plists from `/Library/LaunchAgents/` and `~/Libr
 
 And soon you realize, you can kill everything except the `AdobeIPCBroker`, every single time I tried to terminate the process, it will just come back. (sigh 😮‍💨)
 
-After digging around the internet, found [this post](https://apple.stackexchange.com/questions/204315/how-do-i-remove-or-disable-adobeipcbroker) that gives the necessary steps to get rid of `AdobeIPCBroker`:
+After digging around the internet, found [this post](https://apple.stackexchange.com/a/265918) that gives the necessary steps to get rid of `AdobeIPCBroker`:
 
 1. Kill Core Sync.
 2. Kill CCLibrary.
