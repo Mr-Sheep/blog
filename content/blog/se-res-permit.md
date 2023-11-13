@@ -7,7 +7,7 @@ description = "How to apply for a Swedish Residence Permit as a Chinese passport
 tags = ["visa","豬肝紅","Sweden"]
 +++
 
-廢話一些 2023 年 11 月於北美申請瑞典學生居留卡的經歷
+廢話一些 2023 年 10 月於北美申請瑞典學生居留卡的經歷
 
 <!--more-->
 
