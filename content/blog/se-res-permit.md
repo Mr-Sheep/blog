@@ -86,15 +86,19 @@ DC 大使館地址（Apple Maps 上的瑞典大使館實際是列支敦士登大
 
 這時你就可以開始預訂前往 DCA 的機票了
 
-## Part 3： passport check and biometrics
+## Part 3: passport check and biometrics
 
 瑞典大使館位於 2900 K St NW，住在 Georgetown 可以步行前往，Uber 可以直達大使館。
+
+[Apple Maps 上標註的](<https://maps.apple.com/place?q=Embassy of Sweden&ll=38.9019689%2C-77.0586543&address=2900 K St NW%2C Washington%2C DC%20 20007%2C United States>)瑞典大使館實際上是列支敦士登大使館，瑞典大使館是河邊稍微小一點的那間。
 
 進去通過安檢以後，右轉排隊等待即可
 
 由於豬肝紅並不免簽申根，會需要在驗明~~正身~~護照之後進行拍照和指紋錄取
 
 之後會讓你回到外面的 reception 填寫一張郵寄單並繳費 USD 10
+
+## Part 4: Application Granted
 
 在漫長的等待過後（期間不會有任何 update 或者通知），嘗試 email 對方會得到如下回答：
 
@@ -103,7 +107,7 @@ DC 大使館地址（Apple Maps 上的瑞典大使館實際是列支敦士登大
 
 模板回答...
 
-於是在兩個月以後的 12 月，終於分配到了 case officer，因爲已經提前提交過指紋和護照訊息，所以直接被通過，郵件內容如下：
+在兩個月以後，終於分配到了 case officer，可能因爲已經提前提交過指紋和護照訊息，application 直接被通過，郵件內容如下：
 
 ```
 Your case has been settled. Your application is granted.
@@ -140,3 +144,7 @@ Website: www.migrationsverket.se
 ```
 
 ~~之後就又會進入漫長的等待 to be updated...~~
+
+## 最後
+
+建議有財力購買加勒比 CBI，不要和自己過不去非要拿豬肝紅對抗歐洲效率
