@@ -1,4 +1,5 @@
 ---
+slug: "max-client-reached"
 title: "X: Max Client Reached Fix"
 date: 2020-08-30T21:12:08+08:00
 draft: false

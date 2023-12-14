@@ -1,4 +1,5 @@
 +++
+slug = "macos-global-ipv6-wg"
 title = "wireguard as IPv6 tunnelbroker on macOS"
 date = "2023-12-11T18:30:09-06:00"
 draft = false

@@ -1,4 +1,5 @@
 ---
+slug: "ripe-signup-for-noob"
 title: "RIPE NCC 註冊以及相關字段填寫"
 date: 2021-09-11T19:33:29+08:00
 draft: false

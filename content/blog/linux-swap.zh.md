@@ -1,6 +1,6 @@
 ---
 title: "Linux Swap"
-date: 2020-04-05T02:17:21+08:00
+date: 2019-04-05T02:17:21+08:00
 draft: false
 ---
 
@@ -8,9 +8,9 @@ draft: false
 
 <!--more-->
 
-創建虛擬記憶體的步驟如下，默認在root下執行
+創建虛擬記憶體的步驟如下，默認在 root 下執行
 
-- 創建Swapfile, 啓用，並更改權限
+- 創建 Swapfile, 啓用，並更改權限
 
   ```
   dd if=/dev/zero of=/swapfile bs=1M count=你想要的大小
@@ -30,4 +30,3 @@ draft: false
   ```swapoff -v /swapfile
   swapoff -v /swapfile
   ```
-

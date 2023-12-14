@@ -1,8 +1,9 @@
 ---
+slug: "lethe-wipe-my-disk"
 title: "使用 Lethe 來安全的清空硬碟數據"
 date: 2022-07-27T18:05:57+08:00
 draft: false
-tags: ["Disk","macOS"]
+tags: ["Disk", "macOS"]
 categories: ["macOS"]
 ---
 
@@ -12,23 +13,27 @@ categories: ["macOS"]
 
 # Intro
 
-[Lethe](https://github.com/Kostassoid/lethe)是一個跨平臺的，安全的，免費且開源的drive wiping utility.
+[Lethe](https://github.com/Kostassoid/lethe)是一個跨平臺的，安全的，免費且開源的 drive wiping utility.
 
 其主要特點有：
+
 - 支援 Windows，macOS 和 Linux。
 - 支持數據校驗 （reads back）
 - 使用快速的加密隨機發生器（fast cryptographic random generator）
-- 自定義Block size
+- 自定義 Block size
 - 實驗性功能：追蹤並跳過壞掉的扇區
 - 比直接使用`dd`命令更快
 
 限制：
-- 對於SSD來說，不可能可靠地擦除所有的數據，因為現代SSD控制器進行了各種優化，即磨損均衡和壓縮。目前最好的方法是使用隨機數據進行多輪擦除。之後可能會增加對安全擦除ATA命令的支持，使這個過程更加可靠。
-- 每個存儲設備的最大塊數是2³²，即4,294,967,296。即當block size = 1MB時，可支援 4096TB。
+
+- 對於 SSD 來說，不可能可靠地擦除所有的數據，因為現代 SSD 控制器進行了各種優化，即磨損均衡和壓縮。目前最好的方法是使用隨機數據進行多輪擦除。之後可能會增加對安全擦除 ATA 命令的支持，使這個過程更加可靠。
+- 每個存儲設備的最大塊數是 2³²，即 4,294,967,296。即當 block size = 1MB 時，可支援 4096TB。
 - 該應用程序未在 RAID 存儲設備上進行測試
 
 # 效能：
-我實際測試下來一塊Western Digital 2TB MyPassport：
+
+我實際測試下來一塊 Western Digital 2TB MyPassport：
+
 ```bash
 ❯ sudo lethe wipe --verify=last -s=dod /dev/rdisk5
 Wiping:
@@ -61,29 +66,30 @@ Stage 3/3: Verifying Random Fill
     Skipped blocks          0 (0%)
 ```
 
-來自lethe作者的測試
-- 測試環境：Macbook Pro 2015 with macOS 10.14.4 (Mojave) 
+來自 lethe 作者的測試
+
+- 測試環境：Macbook Pro 2015 with macOS 10.14.4 (Mojave)
 - 測試對象：Sandisk 64G Flash Drive with USB 3.0 interface. OS recommended block size is 128k.
 
 **Zero fill**
 
- Command | Block size | Time taken (seconds)
----------|------------|----------
- `dd if=/dev/zero of=/dev/rdisk3 bs=131072` | 128k | 2667.21
- `lethe wipe --scheme=zero --blocksize=128k --verify=no /dev/rdisk3` | 128k | 2725.77
- `dd if=/dev/zero of=/dev/rdisk3 bs=1m` | 1m | 2134.99
- `lethe wipe --scheme=zero --blocksize=1m --verify=no /dev/rdisk3` | 1m | 2129.61
+| Command                                                             | Block size | Time taken (seconds) |
+| ------------------------------------------------------------------- | ---------- | -------------------- |
+| `dd if=/dev/zero of=/dev/rdisk3 bs=131072`                          | 128k       | 2667.21              |
+| `lethe wipe --scheme=zero --blocksize=128k --verify=no /dev/rdisk3` | 128k       | 2725.77              |
+| `dd if=/dev/zero of=/dev/rdisk3 bs=1m`                              | 1m         | 2134.99              |
+| `lethe wipe --scheme=zero --blocksize=1m --verify=no /dev/rdisk3`   | 1m         | 2129.61              |
 
 **Random fill**
 
- Command | Block size | Time taken (seconds)
----------|------------|----------
- `dd if=/dev/urandom of=/dev/rdisk3 bs=131072` | 128k | 4546.48
- `lethe wipe --scheme=random --blocksize=128k --verify=no /dev/rdisk3` | 128k | 2758.11
+| Command                                                               | Block size | Time taken (seconds) |
+| --------------------------------------------------------------------- | ---------- | -------------------- |
+| `dd if=/dev/urandom of=/dev/rdisk3 bs=131072`                         | 128k       | 4546.48              |
+| `lethe wipe --scheme=random --blocksize=128k --verify=no /dev/rdisk3` | 128k       | 2758.11              |
 
 # 安裝 Lethe
 
-推薦通過 [lethe/releases/latest](https://github.com/Kostassoid/lethe/releases/latest) 下載最新的lethe，可以將其放置於PATH中
+推薦通過 [lethe/releases/latest](https://github.com/Kostassoid/lethe/releases/latest) 下載最新的 lethe，可以將其放置於 PATH 中
 
 # 使用
 
@@ -160,7 +166,8 @@ Data sanitization schemes:
 
 ```
 
-對於不同的scheme，可以閱讀：
+對於不同的 scheme，可以閱讀：
+
 - [Data Sanitization Methods](https://www.lifewire.com/data-sanitization-methods-2626133)
 - [What is the difference between the different wiping methods used by DBAN?](https://security.stackexchange.com/questions/117724/what-is-the-difference-between-the-different-wiping-methods-used-by-dban)
 - [DoD 5220.22-M Data Wipe Method](https://www.datadestroyers.eu/technology/dod_5220.22-m_data_wipe_method.html)

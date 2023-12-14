@@ -1,4 +1,5 @@
 ---
+slug: "dropbear-ssh-luks"
 title: "unlock LUKS with Dropbear SSH public key"
 date: 2022-07-31T14:38:32+08:00
 draft: false
@@ -11,8 +12,6 @@ tags: ["Linux"]
 How to unlock LUKS enabled disk on headless linux machine
 
 <!--more-->
-
-
 
 {{< figure src="/img/n5105.webp" caption="N5105 PCB" class="center-fig">}}
 

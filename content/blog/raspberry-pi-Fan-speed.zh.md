@@ -1,4 +1,5 @@
 ---
+slug: "rpi-fan-control"
 title: "Raspberry Pi Fan Speed"
 date: 2021-02-03T00:54:47+08:00
 draft: false

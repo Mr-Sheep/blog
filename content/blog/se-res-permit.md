@@ -1,4 +1,5 @@
 +++
+slug = "se-residence-permit"
 title = "豬肝紅如何在美國申請 Swedish Residence Permit"
 date = "2023-11-13T02:29:13-06:00"
 draft = false

@@ -1,4 +1,5 @@
 ---
+slug: "hugo-shortcodes-tg"
 title: "Write a Hugo Shortcodes to embed Telegram post"
 date: 2021-09-06T01:13:52+08:00
 draft: false

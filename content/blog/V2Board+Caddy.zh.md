@@ -1,28 +1,30 @@
 ---
+slug: "v2board-kickstart"
 title: "如何成爲帶機場主：面板搭建"
 date: 2020-11-12T20:56:10+08:00
 draft: false
-tags: ["v2board","Anti-Censorship"]
-categories: ["networking","Proxy"]
+tags: ["v2board", "Anti-Censorship"]
+categories: ["networking", "Proxy"]
 ---
 
-如何使用Nginx + PHP + mariadb搭建自己的v2board
+如何使用 Nginx + PHP + mariadb 搭建自己的 v2board
 
 <!--more-->
-實際上v2board的前端寫的並不是很好，很容易就可以看到被隱藏的套餐。sspanel也是一個不錯的選擇。
+
+實際上 v2board 的前端寫的並不是很好，很容易就可以看到被隱藏的套餐。sspanel 也是一個不錯的選擇。
 
 本文默認使用`root`用戶（不推薦你這麼做），請對如`composer`等使用單獨的賬戶
 
 # Changelog
+
 Jul 28th 2022: 移除 caddy 部分
 
 Nov 15th 2021: 添加`php7.4-bcmath`
 
-
-
-
 # PHP
-1. 添加Ondřej Surý的ppa:
+
+1. 添加 Ondřej Surý 的 ppa:
+
 ```
 wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
 echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" |  tee /etc/apt/sources.list.d/php.list
@@ -30,20 +32,24 @@ apt update
 ```
 
 2. 安裝`php7.4`和`redis`
+
 ```
 apt -y install php7.4 php7.4-fpm php7.4-common php7.4-cli redis php7.4-bcmath
 以及一大堆亂七八糟的包 -->
 apt -y install php7.4-curl php7.4-redis php7.4-mysql php7.4-mbstring php7.4-json php7.4-opcache php7.4-readline php7.4-xml
 
 ```
-在安裝之後建議hold php的版本或註釋掉repo
+
+在安裝之後建議 hold php 的版本或註釋掉 repo
 
 3. 解除被禁用的函數
-以`php7.4`爲例，編輯位於 `/etc/php/7.4/fpm/php.ini`
-找到
+   以`php7.4`爲例，編輯位於 `/etc/php/7.4/fpm/php.ini`
+   找到
+
 ```php
 disable_functions = "show_source, system, shell_exec, exec"
 ```
+
 將`disable_functions`中的`putenv`,`proc_open`,`pcntl_alarm`,`pcntl_signal`从列表中删除
 
 4. 修改配置
@@ -53,7 +59,6 @@ disable_functions = "show_source, system, shell_exec, exec"
    ```php
    include=/etc/php/7.4/fpm/www.conf
    ```
-
 
 5. 編輯`/etc/php/7.4/fpm/pool.d/www.conf`，修改
 
@@ -65,17 +70,14 @@ disable_functions = "show_source, system, shell_exec, exec"
    listen.mode = 0660
    ```
 
-   保證nginx能夠正常使用fastcgi unix socket，需要一致的用戶
+   保證 nginx 能夠正常使用 fastcgi unix socket，需要一致的用戶
 
-5. 啓動
+6. 啓動
 
    ```
    systemctl restart php7.4-fpm.service
    systemctl status php7.4-fpm.service
    ```
-
-   
-
 
 # MariaDB
 
@@ -83,16 +85,20 @@ disable_functions = "show_source, system, shell_exec, exec"
 curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
 ```
 
-使用`systemctl status mysql`驗證mysql是否成功安裝
+使用`systemctl status mysql`驗證 mysql 是否成功安裝
+
 ```bash
 ● mariadb.service - MariaDB 10.6.8 database server
      Loaded: loaded (/lib/systemd/system/mariadb.service; enabled; vendor preset: enabled)
-     Active: active (running) since Sat 2022-06-25 22:49:38 PDT; 
+     Active: active (running) since Sat 2022-06-25 22:49:38 PDT;
 ```
+
 ## 加固 MySQL
+
 ```
 mysql_secure_installation
 ```
+
 ```
 Securing the MySQL server deployment.
 
@@ -159,6 +165,7 @@ All done!
 ```
 
 ## 如何移除密碼安全性驗證插件？
+
 ```
     mysql -h localhost -u root -p
     uninstall plugin validate_password;
@@ -167,6 +174,7 @@ All done!
 ```
 
 ## 創建數據庫
+
 數據庫用戶爲`v2b`
 
 用戶密碼爲`fuckGFW`
@@ -178,7 +186,7 @@ All done!
 **MySQL 5.X**
 
 ```sql
-mysql -u root -p 
+mysql -u root -p
 輸入密碼
 GRANT ALL PRIVILEGES ON v2board.* TO 'v2b'@'localhost' IDENTIFIED BY 'fuckGFW（密碼）';
 flush privileges;
@@ -193,7 +201,9 @@ CREATE DATABASE v2board;
 退出數據庫
 \q
 ```
+
 **MySQL 8.X**
+
 ```sql
 mysql> CREATE DATABASE v2board;
 mysql> CREATE USER 'v2b'@'localhost' IDENTIFIED BY 'fuckGFW(你的密碼)';
@@ -210,19 +220,21 @@ mysql> SHOW GRANTS FOR 'v2b'@'localhost';
 
 ```
 
-
 如果你需要導入現有的數據庫，使用以下命令：
+
 ```
-mysql -p -u [用戶] [數據庫] < 備份的數據表.sql 
+mysql -p -u [用戶] [數據庫] < 備份的數據表.sql
 ```
 
 如果你需要備份你現有的數據庫：
+
 ```
 mysqldump -u [用戶]  -p [數據庫] > [filename].sql
 ```
 
 {{< collapse summary="自動備份數據庫" >}}
 來自：[Pe46dro/Bash-MySQL-Database-SFTP-FTP-Backup](https://github.com/Pe46dro/Bash-MySQL-Database-SFTP-FTP-Backup)
+
 ```bash
 #!/bin/bash
 
@@ -302,6 +314,7 @@ echo 'Remote Backup Complete'
 clean_backup
 #END
 ```
+
 {{< /collapse >}}
 
 # nginx
@@ -309,6 +322,7 @@ clean_backup
 參考：[nginx: Linux packages](https://nginx.org/en/linux_packages.html#Debian)
 
 Install the prerequisites:
+
 ```
 sudo apt install curl gnupg2 ca-certificates lsb-release debian-archive-keyring
 ```
@@ -346,8 +360,6 @@ To install nginx, run the following commands:
     sudo apt update
     sudo apt install nginx
 
-
-
 2. 編輯`/etc/nginx/conf.d/domain.conf`
 
 ```nginx
@@ -376,7 +388,7 @@ server {
   if ($http_user_agent ~* "MicroMessenger|QBWebViewType|QQBroswer|UBrowser|360SE|360EE|MetaSr|HUAWEI|HarmonyOS|Maxthon|Sogou|LieBao|TIM|HONOR|wechatdevtools|CensysInspect|qihoobot|Baiduspider|Googlebot|Googlebot-Mobile|Googlebot-Image|Mediapartners-Google|Adsbot-Google|Feedfetcher-Google|YoudaoBot|Sosospider|MSNBot|ia_archiver"){
     return 403;
   } # 不需要屏蔽爬蟲等請移除
-  
+
   location /downloads {
 
   }
@@ -384,14 +396,14 @@ server {
   location / {
     try_files $uri $uri/ /index.php$is_args$query_string;
     deny 162.142.125.0/24; #如果不需要屏蔽censys.io請移除,下同
-    deny 167.94.138.0/24; 
+    deny 167.94.138.0/24;
     deny 167.94.145.0/24;
     deny 167.94.146.0/24;
     deny 167.248.133.0/24;
     deny 2602:80d:1000:b0cc:e::/80;
     deny 2620:96:e000:b0cc:e::/80;
   }
-  
+
   location ~ .*\.(js|css)?$
   {
     expires      1h;
@@ -408,93 +420,91 @@ server {
 
 ```
 
-
 3.啓動及權限
 
-   在網站目錄下
+在網站目錄下
 
-   ```
-   chown -R nginx:nginx *
-   chmod -R 755 *
-   systemctl start nginx
-   systemctl enable nginx
-   ```
+```
+chown -R nginx:nginx *
+chmod -R 755 *
+systemctl start nginx
+systemctl enable nginx
+```
 
-   4. 移除Google Analysis
-   編輯`resources/views`目錄下的`admin.blade.php`和`app.blade.php`
-   移除或註釋其中
-   ```php
-   <script async src="https://www.googletagmanager.com/gtag/js?id=G-P1E9Z5LRRK"></script>
-   ```
+4.  移除 Google Analysis
+    編輯`resources/views`目錄下的`admin.blade.php`和`app.blade.php`
+    移除或註釋其中
 
+```php
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P1E9Z5LRRK"></script>
+```
 
 # V2Board
 
 ## 最低要求
+
 根據[官方給出的配置](https://docs.v2board.com/deploy/aapanel.html#%E4%BD%BF%E7%94%A8aapanel%E9%83%A8%E7%BD%B2)
 
 ☑️ Nginx 1.17
 
 ☑️ MySQL 5.6
 
-☑️ PHP 7.3 
+☑️ PHP 7.3
 
+1.  我的網站目錄位於`/var/www/domain`，在該目錄下：
 
-1. 我的網站目錄位於`/var/www/domain`，在該目錄下：
+    ```
+    git clone https://github.com/v2board/v2board.git && mv v2board/* ./
+    rm -rf v2board
+    ```
 
-   ```
-   git clone https://github.com/v2board/v2board.git && mv v2board/* ./
-   rm -rf v2board
-   ```
+2.  獲取 Composer
 
-2. 獲取Composer
+    ```
+    wget https://getcomposer.org/composer-stable.phar
+    mv composer-stable.phar composer.phar
 
-   ```
-   wget https://getcomposer.org/composer-stable.phar
-   mv composer-stable.phar composer.phar
-   
-   # 官方文檔使用1.90版本，如果你使用2.x版本翻車了，請使用1.90版本
-   # wget https://getcomposer.org/download/1.9.0/composer.phar
-   ```
+    # 官方文檔使用1.90版本，如果你使用2.x版本翻車了，請使用1.90版本
+    # wget https://getcomposer.org/download/1.9.0/composer.phar
+    ```
 
-   Composer v1和v2的區別可以在[這裏](https://blog.packagist.com/composer-2-0-is-now-available/)詳細閱讀
+    Composer v1 和 v2 的區別可以在[這裏](https://blog.packagist.com/composer-2-0-is-now-available/)詳細閱讀
 
-3. 安裝
+3.  安裝
 
-   ```
-   php composer.phar install
-   ```
+    ```
+    php composer.phar install
+    ```
 
-   	可以通過 `apt -y install php7.4-報錯缺失的名字` 解決大部分報錯。當然內存不足也會導致失敗，分配swap即可
+        可以通過 `apt -y install php7.4-報錯缺失的名字` 解決大部分報錯。當然內存不足也會導致失敗，分配swap即可
 
-   ```
-   php artisan v2board:install
-   ```
+    ```
+    php artisan v2board:install
+    ```
 
-   會要求輸入數據庫信息
+    會要求輸入數據庫信息
 
-   數據庫用戶爲`v2b`
+    數據庫用戶爲`v2b`
 
-   用戶密碼爲`fuckGFW`
+    用戶密碼爲`fuckGFW`
 
-   數據庫名字爲`v2board`
+    數據庫名字爲`v2board`
 
-   如果出現數據庫無法連結，請確認是否安裝`php7.4-mysql`
+    如果出現數據庫無法連結，請確認是否安裝`php7.4-mysql`
 
-   **到此，V2Board已經配置完成**
-
+    **到此，V2Board 已經配置完成**
 
 # V2Poseidon
+
 {{< collapse summary="鑑於poseidon已經跑路，建議別讀了" >}}
+
 1. 安裝
-
-
 
    ```
    git clone https://github.com/ColetteContreras/v2ray-poseidon.git
    cd v2ray-poseidon
    chmod +x install-release.sh
-   ./install-release.sh 
+   ./install-release.sh
    ```
 
 2. 配置
@@ -509,13 +519,13 @@ server {
        "checkRate": 60,            // 每隔多长时间同步一次配置文件、用户、上报服务器信息
        "webapi": "http or https://YOUR V2BOARD DOMAIN",// v2board 的域名信息
        "token": "v2board token",   // v2board 和 v2ray-poseidon 的通信密钥
-   
+
        "speedLimit": 0, // 节点限速 单位 字节/s 0 表示不限速
        "user": {
          "maxOnlineIPCount": 0,  // 用户同时在线 IP 数限制 0 表示不限制
          "speedLimit": 0         // 用户限速 单位 字节/s 0 表示不限速
        },
-   
+
        "localPort": 10084 // 本地 api, dokodemo-door,　监听在哪个端口，不能和服务端口相同
      }
    }
@@ -523,15 +533,13 @@ server {
 
 {{< /collapse >}}
 
-
 ## 注意
 
-請在安裝完成php7.4以後註釋掉php的apt repo，或者在apt upgrade的時候略過php部分，否則會造成php與php-redis等版本不同
+請在安裝完成 php7.4 以後註釋掉 php 的 apt repo，或者在 apt upgrade 的時候略過 php 部分，否則會造成 php 與 php-redis 等版本不同
 
-如果出現500錯誤，检查站点根目录权限，递归755，保证目录有可写文件的权限，也有可能是Redis扩展没有安装或者Redis没有按照造成的。你可以通过查看storage/logs下的日志来排查错误或者开启debug模式。
+如果出現 500 錯誤，检查站点根目录权限，递归 755，保证目录有可写文件的权限，也有可能是 Redis 扩展没有安装或者 Redis 没有按照造成的。你可以通过查看 storage/logs 下的日志来排查错误或者开启 debug 模式。
 
 同时请确保目录的所有者为`nginx:nginx`
-
 
 # References
 
@@ -545,7 +553,7 @@ server {
 - [nginx error connect to php5-fpm.sock failed (13: Permission denied)](https://stackoverflow.com/questions/23443398/nginx-error-connect-to-php5-fpm-sock-failed-13-permission-denied)
 - [nginx and php-fpm socket owner](https://stackoverflow.com/questions/24325695/nginx-and-php-fpm-socket-owner)
 - [getting error while updating Composer](https://stackoverflow.com/questions/36979019/getting-error-while-updating-composer)
-- [V2 Poseidon官方文檔](https://poseidon-gfw.cc)
+- [V2 Poseidon 官方文檔](https://poseidon-gfw.cc)
 - [V2Board 官方文檔](https://docs.v2board.com)
 - [Caddy 官方文檔](https://caddyserver.com/docs/caddyfile/directives/php_fastcgi)
 - [How to grant all privileges to root user in MySQL 8.0](https://stackoverflow.com/a/50197630)

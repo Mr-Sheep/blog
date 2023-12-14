@@ -1,4 +1,5 @@
 ---
+slug: "wechat-zone"
 title: "關於微信轉區的一些迷思"
 date: 2021-09-06T00:19:16+08:00
 draft: false
@@ -7,7 +8,7 @@ tags: ["WeChat"]
 categories: []
 ---
 
-微信最近開放了區域互轉。允許用戶從 Wexin 轉移到 WeChat。 因爲實在無法忍受微信朋友圈的廣告，準備轉移到歐洲區試試
+微信最近開放了區域互轉。允許用戶從 Wexin 轉移到 WeChat。
 
 <!--more-->
 
@@ -30,8 +31,6 @@ categories: []
 ## 不同地區之間帳號的區別
 
 [Weixin/WeChat 各区账号功能对比](https://go.docofcard.com/2HzWdH)
-
-（如果加載不出來這個 Telegram Post 說明你梯子掛了）
 
 {{< telegram DocOfCard 1592 >}}
 
