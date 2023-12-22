@@ -144,7 +144,25 @@ Email: https://www.migrationsverket.se/English/Contact-us/Email-us.html
 Website: www.migrationsverket.se
 ```
 
-~~之後就又會進入漫長的等待 to be updated...~~
+在等待的過程中，你可以嘗試發信給 [visa.washington@gov.se](mailto:visa.washington@gov.se)。我得到的回覆是這樣的:
+
+```
+Hello,
+
+We haven't received your card yet. I typically take 2-3 weeks for us to receive a card after you are approved. However, with the holidays it might take longer.
+
+Best regards
+```
+
+幸運的是，在聖誕節的前幾天，收到了名爲 "Residence permit card" 的郵件:
+
+```
+This is an automatically generated email, please do not reply.
+
+Your residence permit card has arrived at the Embassy Of Sweden In Washington D.c.. To be able to receive your card you need to show proof of identity. You can also authorize (give power of attorney to) another person to receive the residence card on your behalf. That person must present power of attorney signed by you and a proof of identity. You can visit the Embassy/Consulate to pick up your card. Please be aware that you may need to schedule an appointment time at the Embassy/Consulate to collect your residence permit card. For information on how to proceed and for addresses and opening hours to Swedish Embassies and Consulates please visit www.swedenabroad.com.
+```
+
+To be Continued...
 
 ## 最後
 
