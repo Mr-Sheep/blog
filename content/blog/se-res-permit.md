@@ -1,11 +1,11 @@
 +++
 slug = "se-residence-permit"
-title = "豬肝紅如何在美國申請 Swedish Residence Permit"
+title = "豬肝紅如何在美國申請瑞典學生居留卡"
 date = "2023-11-13T02:29:13-06:00"
 draft = false
 description = "How to apply for a Swedish Residence Permit as a Chinese passport holder in the US"
 
-tags = ["visa","豬肝紅","Sweden"]
+tags = ["visa","豬肝紅","Sweden","簽證","居留卡"]
 +++
 
 廢話一些 2023 年 10 月於北美申請瑞典學生居留卡的經歷
@@ -18,18 +18,18 @@ anything written on this page is subject to change, please refer to [https://www
 
 ## Part 0: 我是否需要 Residence Permit?
 
-**我是否需要簽證？**
+**我是否需要居留卡？**
 
-**In order to study for more than 90 days in Sweden, you must have a residence permit.**
+> **In order to study for more than 90 days in Sweden, you must have a residence permit.**
 
-如果學習超過 **90** 天，如果您不是歐盟成員國公民（[EU/​​​​​EEA citi­zens and long-term resi­dents](https://www.migrationsverket.se/English/Private-individuals/EU-EEA-citizens-and-long-term-residents.html)）都需要 residence permit
+學習超過 **90** 天，如果您不是歐盟成員國公民（[EU/​​​​​EEA citi­zens and long-term resi­dents](https://www.migrationsverket.se/English/Private-individuals/EU-EEA-citizens-and-long-term-residents.html)）都需要 residence permit
 
 當然，如果你是：
 
-- 美國公民
-- 申根免簽國家護照持有者:[列表](https://www.mofa.go.jp/j_info/visit/visa/short/novisa.html)
+- 美國**公民**
+- 申根免簽護照([列表](https://www.mofa.go.jp/j_info/visit/visa/short/novisa.html))持有者 (如臺灣)
 
-您可以在北美提交申請，並在入境瑞典之後領卡
+以下內容，不同的是您可以在北美提交申請，並在入境瑞典之後領卡
 
 當然宇宙第一豬肝紅是沒這個待遇的
 
@@ -37,7 +37,9 @@ anything written on this page is subject to change, please refer to [https://www
 
 申請可以在線提交，但是需要本人攜帶護照原本前往 DC 的大使館並提交 biometrics（拍照 + 指紋）
 
-DC 大使館地址（Apple Maps 上的瑞典大使館實際是列支敦士登大使館）：
+DC 大使館地址（[Apple Maps 上標註的](<https://maps.apple.com/place?q=Embassy of Sweden&ll=38.9019689%2C-77.0586543&address=2900 K St NW%2C Washington%2C DC%20 20007%2C United States>)瑞典大使館實際是列支敦士登大使館）：
+
+{{< maps 38.9019689 -77.0586543 >}}
 
 > Embassy of Sweden
 > 2900 K St NW
@@ -59,7 +61,7 @@ DC 大使館地址（Apple Maps 上的瑞典大使館實際是列支敦士登大
 以及：
 
 - 1500.00 SEK 申請費
-- USD 10 FedEx 郵寄費用（將 residence permit 郵寄至你的美國地址）
+- USD 10 FedEx 郵寄費用（將 residence permit 郵寄至你的美國地址），實際上使用 Standard Overnight 速度很快
 - 一段文字解釋 Why Sweden
 
 {{< notice info >}}
@@ -83,7 +85,7 @@ DC 大使館地址（Apple Maps 上的瑞典大使館實際是列支敦士登大
 
 他會讓你發郵件預約，當你向 [visa.washington@gov.se](mailto:visa.washington@gov.se) 發送郵件後會收到自動回覆：
 
-> pplicants that have been informed by the Migration Agency to show their passport in original at the Embassy, can do so without booking an appointment. Please use any of our available walk-in dates and times without an appointment. _No other time slots are available._
+> Applicants that have been informed by the Migration Agency to show their passport in original at the Embassy, can do so without booking an appointment. Please use any of our available walk-in dates and times without an appointment. _No other time slots are available._
 
 這時你就可以開始預訂前往 DCA 的機票了
 
@@ -162,8 +164,21 @@ This is an automatically generated email, please do not reply.
 Your residence permit card has arrived at the Embassy Of Sweden In Washington D.c.. To be able to receive your card you need to show proof of identity. You can also authorize (give power of attorney to) another person to receive the residence card on your behalf. That person must present power of attorney signed by you and a proof of identity. You can visit the Embassy/Consulate to pick up your card. Please be aware that you may need to schedule an appointment time at the Embassy/Consulate to collect your residence permit card. For information on how to proceed and for addresses and opening hours to Swedish Embassies and Consulates please visit www.swedenabroad.com.
 ```
 
-To be Continued...
+12.26 下午被 FedEx 敲門叫醒，大使館居然寄的是 [FedEx Standard Overnight](https://www.fedex.com/en-us/shipping/overnight.html#)，需要簽字接收:
+
+
+- [Friday 10:35 AM] (Washington, DC) Shipment information sent to FedEx
+- [Friday 3:22 PM] (Washington, DC) Picked Up
+- [Friday 7:44 PM] (Washington, DC) Left FedEx Origin facility
+- [Tuesday 2:00 PM] (xxx, xx) Delivered.
+
+
+在出發前不久終於收到了卡片，非常幸運。
+
+「嚴霜纔過後，方可始相宜」
+
+The End.
 
 ## 最後
 
-建議有財力購買加勒比 CBI，不要和自己過不去非要拿豬肝紅對抗歐洲效率
+建議有能力就潤，不要和自己過不去非要拿豬肝紅對抗歐洲效率
