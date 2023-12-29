@@ -172,12 +172,19 @@ Your residence permit card has arrived at the Embassy Of Sweden In Washington D.
 - [Friday 7:44 PM] (Washington, DC) Left FedEx Origin facility
 - [Tuesday 2:00 PM] (xxx, xx) Delivered.
 
-
 在出發前不久終於收到了卡片，非常幸運。
 
 「嚴霜纔過後，方可始相宜」
 
 The End.
+
+## 無關內容
+
+在前往目的地之前建議仔細查看目前的租房合同並和目前所在地的房東聯繫，告知對方這只是 temporary absence and not an abandonment of my lease.
+
+瑞典的短期租房除了學校的國際學生住宿和 AFB 以外，還可以考慮 [renthia.com](https://renthia.com)。~~您可以獲得 CEO 親自回覆 ticket 的體驗.jpg~~
+
+之後應該會測試一下各大 esim provider 的實際 isp 和出口質量
 
 ## 最後
 
