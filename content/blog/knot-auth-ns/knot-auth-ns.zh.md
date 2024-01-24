@@ -343,11 +343,19 @@ knotc zone-commit zone...
 {{< /notice >}}
 
 ```
-knotc zone-begin <FQDN>
-knotc zone-set <FQDN> @ 3600 SOA ns1.example.com. email.example.com 48 10800 3600 604800 3600
-knotc zone-set <FQDN> @ 3600 NS ns1.example.com.
-knotc zone-set <FQDN> @ 3600 NS ns2.example.com.
-knotc zone-commit <FQDN>
+> knotc zone-begin <FQDN>
+> knotc zone-set <FQDN> @ 3600 SOA ns1.example.com. email.example.com 48 10800 3600 604800 3600
+> knotc zone-set <FQDN> @ 3600 NS ns1.example.com.
+> knotc zone-set <FQDN> @ 3600 NS ns2.example.com.
+> knotc zone-commit <FQDN>
+```
+
+## 添加 PTR 記錄
+
+```
+> knotc zone-begin 14.5.114.in-addr.arpa.
+> knotc zone-set 14.5.114.in-addr.arpa. 114.14.5.114.in-addr.arpa. 3600 PTR 1919810.com.
+> knotc zone-commit 14.5.114.in-addr.arpa.
 ```
 
 # RIPE DB domain object
