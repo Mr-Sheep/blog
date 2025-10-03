@@ -6,6 +6,8 @@ tags = ["fun","macos", "OpenZFS"]
 
 I happened to have a bunch of spare SSDs with me while also running out of space on my M.2 enclosure. So I had the idea of building a quad ssd enclosure DAS.
 
+<!--more-->
+
 Most of the enclosures I can find uses the same chipset from ASMedia (ASM-2464PDX), I picked the 4M2 from OWC as it has built-in cooling fans and cheaper than Terramaster.
 
 My specs:
