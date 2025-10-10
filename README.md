@@ -1,2 +1,1 @@
-This is a simple blog repo based on [hugo](https://gohugo.io/) and theme [PaperMod](https://adityatelange.github.io/hugo-PaperMod/)
-
+This is a simple blog repo based on [hugo](https://gohugo.io/) and a [modified version](https://github.com/Mr-Sheep/hugo-bearblog-mod) of bearblog
