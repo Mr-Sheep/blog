@@ -179,3 +179,5 @@ by default OpenZFS volumes can only be written by the `root` user, to give yours
 - verify checksum and repair with: `sudo zpool scrub [pool]`
 - redundancy: `sudo zfs set copies=2 [dataset]`
 - current read/write status: `zpool iostat -v [pool]`
+
+{{< giscus "Mr-Sheep/blog" "MDEwOlJlcG9zaXRvcnkzNDQ4NjQ1MTQ=" "preferred_color_scheme" >}}

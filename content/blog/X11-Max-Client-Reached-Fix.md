@@ -26,7 +26,7 @@ Maximum number of clients reached
 After some google searches, I found this as a "solution":
 
 **edit your `xorg.conf` file, I'm using xpra, so `/etc/xpra/xorg.conf`.**
-<br>
+
 For other display managers, it may be located in `/etc/X11/` or somewhere else.
 Find the `ServerFlags` section, add this to your file:
 
@@ -57,5 +57,5 @@ Please consult the The X.Org Foundation support
 ### Credit
 
 [Does X-Window have a maximum number limit on clients?](https://unix.stackexchange.com/questions/498652/does-x-window-have-a-maximum-number-limit-on-clients)
-<br>
+
 [How can I diagnose/debug “maximum number of clients reached” X errors?](https://askubuntu.com/questions/4499/how-can-i-diagnose-debug-maximum-number-of-clients-reached-x-errors)

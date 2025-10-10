@@ -4,7 +4,7 @@ date: 2019-04-05T02:17:21+08:00
 draft: false
 ---
 
-有些虛擬伺服器的記憶體給的很少，這個時候就需要虛擬記憶體了
+note to remind myself how to setup swap on linux
 
 <!--more-->
 
@@ -12,7 +12,7 @@ draft: false
 
 - 創建 Swapfile, 啓用，並更改權限
 
-  ```
+  ```sh
   dd if=/dev/zero of=/swapfile bs=1M count=你想要的大小
   mkswap /swapfile
   swapon /swapfile
@@ -21,12 +21,13 @@ draft: false
 
 - 開機啓動,編輯 `/etc/fstab`
 
-  ```
+  ```sh
   /swapfile swap swap defaults 0 0
   ```
 
 - 關閉虛擬記憶體
 
-  ```swapoff -v /swapfile
+  ```sh
+  swapoff -v /swapfile
   swapoff -v /swapfile
   ```

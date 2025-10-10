@@ -75,3 +75,5 @@ root用戶密碼：root/password
 	
 
 聊天產生的文件位於 `/home/debian/Documents/xwechat_files`.
+
+{{< giscus "Mr-Sheep/blog" "MDEwOlJlcG9zaXRvcnkzNDQ4NjQ1MTQ=" "preferred_color_scheme" >}}

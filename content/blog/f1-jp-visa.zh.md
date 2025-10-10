@@ -49,7 +49,7 @@ LA 領館地址：
 據說 3 年多次的 V72 要求 USD 30k 的資產，5 年需要 USD 50k。  
 然後就有一群人找你國中介僞造證明
 
-對於申請多次入境的<u>中國公民</u>，你需要[以下材料](<https://www.la.us.emb-japan.go.jp/pdf/7_TEMPORARY_VISIT_FOR_CHINESE_CITIZENS_(MULTIPLE_ENTRY).pdf>):
+對於申請多次入境的中國公民，你需要[以下材料](<https://www.la.us.emb-japan.go.jp/pdf/7_TEMPORARY_VISIT_FOR_CHINESE_CITIZENS_(MULTIPLE_ENTRY).pdf>):
 
 - 一份有效的簽字護照（日本只要求你的護照在入境日本時是有效的），有至少一頁空白；
 - 一份正確填寫的[**簽證申請表**](https://www.la.us.emb-japan.go.jp/pdf/Visa_Application_FillableForm.pdf)；

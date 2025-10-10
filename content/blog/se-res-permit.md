@@ -189,3 +189,5 @@ The End.
 ## 最後
 
 建議有能力就潤，不要和自己過不去非要拿豬肝紅對抗歐洲效率
+
+{{< giscus "Mr-Sheep/blog" "MDEwOlJlcG9zaXRvcnkzNDQ4NjQ1MTQ=" "preferred_color_scheme" >}}
