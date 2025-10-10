@@ -1,7 +1,7 @@
 ---
 slug: "zhihu-no-login"
 title: "通過 Surge 和 1Blocker 實現手機上免登錄使用知乎網頁版"
-date: 2021-10-31T14:26:32+08:00
+date: 2020-10-31T14:26:32+08:00
 draft: false
 tags: ["Zhihu"]
 categories: ["Tweaks"]
