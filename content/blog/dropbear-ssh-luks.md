@@ -7,6 +7,9 @@ categories: ["ssh", "luks"]
 tags: ["Linux"]
 ---
 
+**Updates** 
+- Jan 25, 2026: updating the default config directory to `/etc/dropbear/initramfs/`
+
 {{< figure src="/img/cover/Drop-Bear-Size-Chart.webp" caption="image from https://mythicaustralia.com/drop-bear-size-chart/" class="center-fig" >}}
 
 How to unlock LUKS enabled disk on headless linux machine
@@ -21,7 +24,7 @@ I recently purchased this puppy and planned to use it as my home lab + router. I
 
 # About Dropbear
 
-Dropbear's webpage doesn't really work atm, but luckily we had [Dropbear SSH on archive.org](https://web.archive.org/web/20220712180156/https://matt.ucc.asn.au/dropbear/dropbear.html):
+Dropbear's webpage doesn't really work atm (well it works as of Jan 2026), but luckily we had [Dropbear SSH on archive.org](https://web.archive.org/web/20220712180156/https://matt.ucc.asn.au/dropbear/dropbear.html):
 
 > Dropbear is a relatively small SSH server and client. It runs on a variety of unix platforms. Dropbear is open source software, distributed under a MIT-style license. Dropbear is particularly useful for "embedded"-type Linux (or other Unix) systems, such as wireless routers.
 
@@ -61,7 +64,7 @@ mmcblk0boot1              4M disk
 apt udpate && apt -y install dropbear-initramfs
 ```
 
-3. to configure dropbear SSH with public key authentication, edit `/etc/dropbear-initramfs/config`, edit the `DROPBEAR_OPTIONS` field:
+3. to configure dropbear SSH with public key authentication, edit `/etc/dropbear/initramfs/dropbear.conf`, edit the `DROPBEAR_OPTIONS` field:
 
 ```
 DROPBEAR_OPTIONS="-I 240 -p <your-port> -s -g -j -k"
@@ -110,7 +113,7 @@ Usage: dropbear [options]
 
 {{< /collapse >}}
 
-4. place your public key into `/etc/dropbear-initramfs/authorized_keys` and then run `update-initramfs -u` to update the existing [initramfs](https://www.unix.com/man-page/Linux/8/update-initramfs/).
+4. place your public key into `/etc/dropbear/initramfs/authorized_keys` and then run `update-initramfs -u` to update the existing [initramfs](https://www.unix.com/man-page/Linux/8/update-initramfs/).
 
 5. go ahead and reboot your system. you should now able to ssh into your system using `ssh root@<ip> -p <port> -i /path/to/private/key`. Then use the command `cryptroot-unlock` to unlock the disk.
    ![dropbear operation](/img/dropbear-operation.webp)
