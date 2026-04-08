@@ -50,6 +50,110 @@ How I finally managed to set up my very first actual home lab. This is not, in a
 
 - **Case Fans**: I went way overkill for this. Threw in a bunch of Noctua fans.
 
+- **SFP+ card**: 
+
+  This is the fun part, I have an old 4 ports X520-2 with 82599ES. I also found another interesting card from taobao: a PCIe 4.0 1x card using RTL8127ATF chipset from the crab company.
+
+  {{< collapse summary="some funzies (click to expand)" >}}
+
+  Since I have not received the realtek card yet, I bought a x1 to x16 riser on Amazon and played around with the X520, interestly: 
+
+  ```bash
+  > lspci -s 27:00.1 -vv
+
+  Capabilities: [a0] Express (v2) Endpoint, IntMsgNum 0
+		DevCap:	MaxPayload 512 bytes, PhantFunc 0, Latency L0s <512ns, L1 <64us
+			ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset+ SlotPowerLimit 0W TEE-IO-
+		DevCtl:	CorrErr+ NonFatalErr+ FatalErr+ UnsupReq+
+			RlxdOrd+ ExtTag- PhantFunc- AuxPwr- NoSnoop+ FLReset-
+			MaxPayload 256 bytes, MaxReadReq 512 bytes
+		DevSta:	CorrErr+ NonFatalErr- FatalErr- UnsupReq+ AuxPwr- TransPend-
+		LnkCap:	Port #1, Speed 5GT/s, Width x8, ASPM L0s, Exit Latency L0s <2us
+			ClockPM- Surprise- LLActRep- BwNot- ASPMOptComp-
+		LnkCtl:	ASPM Disabled; RCB 64 bytes, LnkDisable- CommClk-
+			ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
+		LnkSta:	Speed 5GT/s, Width x8
+			TrErr- Train- SlotClk+ DLActive- BWMgmt- ABWMgmt-
+		DevCap2: Completion Timeout: Range ABCD, TimeoutDis+ NROPrPrP- LTR-
+			 10BitTagComp- 10BitTagReq- OBFF Not Supported, ExtFmt- EETLPPrefix-
+			 EmergencyPowerReduction Not Supported, EmergencyPowerReductionInit-
+			 FRS- TPHComp- ExtTPHComp-
+			 AtomicOpsCap: 32bit- 64bit- 128bitCAS-
+		DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis-
+			 AtomicOpsCtl: ReqEn-
+			 IDOReq- IDOCompl- LTR- EmergencyPowerReductionReq-
+			 10BitTagReq- OBFF Disabled, EETLPPrefixBlk-
+		LnkSta2: Current De-emphasis Level: -6dB, EqualizationComplete- EqualizationPhase1-
+			 EqualizationPhase2- EqualizationPhase3- LinkEqualizationRequest-
+			 Retimer- 2Retimers- CrosslinkRes: unsupported
+  ```
+
+  Notice these lines: 
+
+  ```bash
+  LnkCap: Speed 5GT/s, Width x8
+  ...
+  LnkSta:	Speed 5GT/s, Width x8
+  ```
+
+  Thinking there's no way this would make any sense, I did a little more digging:
+
+  running `lspci -tv`:
+
+  ```bash
+  -[0000:00]-+-00.0  Advanced Micro Devices, Inc. [AMD] Starship/Matisse Root Complex
+           +-00.2  Advanced Micro Devices, Inc. [AMD] Starship/Matisse IOMMU
+           +-01.0  Advanced Micro Devices, Inc. [AMD] Starship/Matisse PCIe Dummy Host Bridge
+           +-01.1-[01]----00.0  Phison Electronics Corporation E18 PCIe4 NVMe Controller
+           +-01.2-[20-30]----00.0-[21-30]--+-01.0-[23]----00.0  Phison Electronics Corporation E18 PCIe4 NVMe Controller
+           |                               +-02.0-[24]--+-00.0  Intel Corporation Ethernet Controller X550
+           |                               |            \-00.1  Intel Corporation Ethernet Controller X550
+           |                               +-03.0-[25-29]----00.0-[26-29]--+-01.0-[27]--+-00.0  Intel Corporation 82599ES 10-Gigabit SFI/SFP+ Network Connection
+           |                               |                               |            \-00.1  Intel Corporation 82599ES 10-Gigabit SFI/SFP+ Network Connection
+           |                               |                               +-08.0-[28]--
+           |                               |                               \-09.0-[29]--+-00.0  Intel Corporation 82599ES 10-Gigabit SFI/SFP+ Network Connection
+           |                               |                                            \-00.1  Intel Corporation 82599ES 10-Gigabit SFI/SFP+ Network Connection
+  ```
+
+  and checking link status for all the bridges:
+
+  ```bash
+  $ lspci -s 0000:27:00.0 -vv | egrep "LnkCap|LnkSta"
+      LnkCap:	Port #1, Speed 5GT/s, Width x8, ASPM L0s, Exit Latency L0s <2us
+      LnkSta:	Speed 5GT/s, Width x8
+      LnkSta2: Current De-emphasis Level: -6dB, EqualizationComplete- EqualizationPhase1-
+  $ lspci -s 0000:26:01.0 -vv | egrep "LnkCap|LnkSta"
+      LnkCap:	Port #1, Speed 8GT/s, Width x8, ASPM L1, Exit Latency L1 <4us
+      LnkSta:	Speed 5GT/s, Width x8
+      LnkCap2: Supported Link Speeds: 2.5-8GT/s, Crosslink+ Retimer- 2Retimers- DRS-
+      LnkSta2: Current De-emphasis Level: -6dB, EqualizationComplete- EqualizationPhase1-
+  $ lspci -s 0000:25:00.0 -vv | egrep "LnkCap|LnkSta"
+      LnkCap:	Port #0, Speed 8GT/s, Width x8, ASPM L1, Exit Latency L1 <4us
+      LnkSta:	Speed 8GT/s, Width x1 (downgraded)
+      LnkCap2: Supported Link Speeds: 2.5-8GT/s, Crosslink+ Retimer- 2Retimers- DRS-
+      LnkSta2: Current De-emphasis Level: -6dB, EqualizationComplete+ EqualizationPhase1+
+  $ lspci -s 0000:21:03.0 -vv | egrep "LnkCap|LnkSta"
+      LnkCap:	Port #3, Speed 16GT/s, Width x1, ASPM not supported
+      LnkSta:	Speed 8GT/s, Width x1
+      LnkCap2: Supported Link Speeds: 2.5-16GT/s, Crosslink- Retimer+ 2Retimers+ DRS-
+      LnkSta2: Current De-emphasis Level: -3.5dB, EqualizationComplete+ EqualizationPhase1+
+  $ lspci -s 0000:00:01.2 -vv | egrep "LnkCap|LnkSta"
+      LnkCap:	Port #0, Speed 16GT/s, Width x8, ASPM not supported
+      LnkSta:	Speed 16GT/s, Width x4
+      LnkCap2: Supported Link Speeds: 2.5-16GT/s, Crosslink- Retimer+ 2Retimers+ DRS-
+      LnkSta2: Current De-emphasis Level: -3.5dB, EqualizationComplete+ EqualizationPhase1+
+  ```
+
+  few findings:
+
+  - this matches the diagram provided below
+  - the riser is only running at pcie 3.0 speed, not 4.0
+
+  {{< /collapse >}}
+
+  
+
+
 ## Limitation of this build
 
 ### Over-subscribed chipset PCIe 4.0 link
