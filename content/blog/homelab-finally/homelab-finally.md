@@ -52,7 +52,7 @@ How I finally managed to set up my very first actual home lab. This is not, in a
 
 - **SFP+ card**: 
 
-  This is the fun part, I have an old 4 ports X520-2 with 82599ES. I also found another interesting card from taobao: a PCIe 4.0 1x card using RTL8127ATF chipset from the crab company.
+  This is the fun part, I have an old 4 ports X520-2 with 82599ES. I also found another interesting card from taobao: a PCIe 4.0 1x card using [RTL8127ATF](https://www.realtek.com/Download/List?cate_id=584) chipset from the [crab company](https://www.realtek.com). I couldn't find any spec sheet about it, but [here](https://www.techpowerup.com/337113/realtek-to-bring-affordable-10-gbps-ethernet-to-the-masses-later-this-year) is a techpowerup article on it.
 
   {{< collapse summary="some funzies (click to expand)" >}}
 
