@@ -54,6 +54,8 @@ How I finally managed to set up my very first actual home lab. This is not, in a
 
   This is the fun part, I have an old 4 ports X520-2 with 82599ES. I also found another interesting card from taobao: a PCIe 4.0 1x card using [RTL8127ATF](https://www.realtek.com/Download/List?cate_id=584) chipset from the [crab company](https://www.realtek.com). I couldn't find any spec sheet about it, but [here](https://www.techpowerup.com/337113/realtek-to-bring-affordable-10-gbps-ethernet-to-the-masses-later-this-year) is a techpowerup article on it.
 
+  Driver notes on the [r8127](/rtl8127atf-driver)
+
   {{< collapse summary="some funzies (click to expand)" >}}
 
   Since I have not received the realtek card yet, I bought a x1 to x16 riser on Amazon and played around with the X520, interestly: 
@@ -563,3 +565,14 @@ apt -y install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virt-
 ## b. firewall
 
 good old `ufw`.
+
+## c. zfs backup with `syncoid`
+
+I like a tool called `syncoid` which comes with the `sanoid` package:
+
+```
+zfs create -o readonly=on other/backup
+syncoid --sendoptions=raw --use-hold --no-rollback source-pool/dataset other/backup/dataset
+```
+
+{{< giscus "Mr-Sheep/blog" "MDEwOlJlcG9zaXRvcnkzNDQ4NjQ1MTQ=" "preferred_color_scheme" >}}
