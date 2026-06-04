@@ -576,3 +576,17 @@ syncoid --sendoptions=raw --use-hold --no-rollback source-pool/dataset other/bac
 ```
 
 {{< giscus "Mr-Sheep/blog" "MDEwOlJlcG9zaXRvcnkzNDQ4NjQ1MTQ=" "preferred_color_scheme" >}}
+
+## d. fixing nic names
+
+ref: [debian manpage](https://manpages.debian.org/jessie/systemd/systemd.link.5.en.html)
+
+put the following in `cat /etc/systemd/network/10-xxx.link`: 
+
+```sh
+[Match]
+MACAddress=9c:6b:de:ad:be:ef
+
+[Link]
+Name=lan0
+```
